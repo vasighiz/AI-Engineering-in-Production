@@ -15,8 +15,6 @@ A source-based study reference covering the core concepts, design decisions, and
 - [9. Dataset Engineering](reference/09-dataset-engineering.md)
 - [10. Inference Optimization](reference/10-inference-optimization.md)
 - [11. Architecture and User Feedback](reference/11-architecture-and-user-feedback.md)
-- [Overall Source-Derived AI Engineering Workflow](reference/12-overall-workflow.md)
-- [Final Course Takeaways](reference/13-final-course-takeaways.md)
 
 ## About This Reference
 
