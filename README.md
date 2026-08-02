@@ -18,9 +18,7 @@ A source-based study reference covering the core concepts, design decisions, and
 
 ## About This Reference
 
-This repository currently contains an expanded study guide derived from the attached AI Engineering course transcript. The chapters preserve the course's explanations, examples, trade-offs, and recommended workflows while removing timestamps and spoken-language repetition.
-
-The structure is intentionally modular so future additions can include:
+This repository currently contains a study guide derived from the AI Engineering by Chip Huyen. Further addition will be upload as follows:
 
 - implementation examples
 - production patterns
