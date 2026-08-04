@@ -221,6 +221,96 @@ A well-designed memory system can:
 
 Memory must still be governed carefully. Storing too much irrelevant, outdated, or sensitive information can reduce quality and create privacy risk.
 
+## 7.12 The autonomy spectrum
+
+Agency is not binary. A system can be:
+
+- **Scripted:** application code selects every step and the model performs bounded language tasks.
+- **Semi-autonomous:** the model chooses from a restricted set of tools within enforced state, permission, and transition boundaries.
+- **Highly autonomous:** the model creates plans, chooses tools, adapts many steps, and may generate new code dynamically.
+
+Most production workflows should begin scripted or narrowly semi-autonomous. Autonomy should be increased only when evaluation shows that the added flexibility improves outcomes enough to justify greater unpredictability and risk.
+
+For the Example Agent, typed extraction can use an LLM, while schema selection, validation, state transitions, write authorization, and duplicate prevention should begin as deterministic application logic.
+
+## 7.13 Task decomposition
+
+Start by describing how a competent human completes the task. For every step, ask whether an LLM can perform it reliably and whether its output is independently testable. Split the work further until every model task is narrow and every external action has a defined tool contract.
+
+Four decomposition patterns are useful:
+
+1. **Functional:** split by responsibility or expertise, such as parsing, extraction, validation, and communication.
+2. **Spatial:** split by file, service, region, market, directory, or another independent boundary.
+3. **Sequential or temporal:** split by dependency and business state; later stages begin only when earlier prerequisites are satisfied.
+4. **Data-driven:** partition independent records or documents for parallel processing, then aggregate results.
+
+Patterns can be combined. The Example Agent is primarily sequential, with functional components and possible parallel parsing of independent attachments.
+
+## 7.14 Tool contracts
+
+The model does not directly execute a tool. It produces a structured request, application code validates it, the implementation performs the operation, and the result returns as new context.
+
+A production tool contract should define:
+
+- a stable name and plain-language purpose;
+- typed inputs and outputs;
+- side effects;
+- authentication and authorization scope;
+- timeout, retry, throttling, and rate-limit behavior;
+- idempotency and duplicate handling;
+- error categories;
+- caching policy where safe;
+- asynchronous behavior;
+- owner, version, tests, and documentation.
+
+Give each component only the tools it needs. Least-privilege tool scoping improves security, auditability, and debugging.
+
+## 7.15 Layered guardrails
+
+Guardrails form a quality and safety gate between an agent claiming completion and the system accepting the result.
+
+1. **Deterministic checks** should handle schemas, formats, permissions, limits, business rules, and state transitions.
+2. **Model-based checks** may assess nuanced criteria such as evidence consistency, tone, or completeness.
+3. **Human approval** should remain for ambiguity and material business actions.
+
+The cheapest and most reliable check should run first. A model judge should not replace code when an exact rule exists.
+
+## 7.16 Reflection
+
+Reflection adds a second pass in which the model critiques an output and revises it. It can be valuable for structured JSON, procedural instructions, code, research, and long-form writing—especially when the critique includes external evidence such as schema errors or test failures.
+
+Reflection increases cost and latency, so compare it with a single-pass baseline. Limit retries and use a circuit breaker. A reflection loop may fix formatting or identify unsupported claims; it must not invent missing authoritative data.
+
+## 7.17 Planning and execution control
+
+Planning lets a model decide which tools are needed and in what order. It is valuable when valid paths vary by request, but it increases unpredictability.
+
+Safer planning uses:
+
+- structured plans rather than free-form prose where possible;
+- allowed-tool and parameter validation;
+- explicit step and cost limits;
+- separation between read and write tools;
+- approval before sensitive actions;
+- durable state so work can resume safely;
+- trace logging for every decision and result.
+
+Do not use dynamic planning when a known deterministic workflow is sufficient.
+
+## 7.18 Multi-agent collaboration
+
+Multiple agents can provide specialization, context isolation, parallel work, or different permission sets. They also create communication overhead, resource conflicts, failure propagation, rate-limit pressure, and difficult debugging.
+
+Common coordination patterns are:
+
+- **Sequential:** one specialist hands structured output to the next; simplest and most predictable.
+- **Parallel:** independent work runs concurrently and is later combined.
+- **Manager–specialist:** a coordinator assigns and reviews specialist work.
+- **Hierarchical:** managers coordinate sub-agents for very complex systems.
+- **All-to-all:** any agent can communicate with any other; flexible but difficult to control and uncommon for high-stakes production workflows.
+
+Define interfaces, not vague roles. Every handoff needs a typed schema, identifiers, and references. Start with a simple pipeline and introduce additional agents only when the benefit is measurable.
+
 ## Key takeaway
 
-An agent is not simply a chatbot with more prompts. It is a system that combines planning, tools, memory, validation, and repeated interaction with an environment. The more power it receives, the more important evaluation, authorization, safety boundaries, and human oversight become.
+An agent is not simply a chatbot with more prompts. It is a controlled system that combines decomposition, tools, planning, memory, validation, state, and repeated interaction with an environment. The more power it receives, the more important evaluation, least privilege, traceability, and human oversight become.
