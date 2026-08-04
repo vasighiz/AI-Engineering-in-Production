@@ -34,6 +34,27 @@ Foundation models now support applications such as:
 
 The model is only one component. The AI engineer is responsible for the surrounding system: prompts, retrieval, tools, evaluations, safety controls, data pipelines, feedback loops, deployment, and inference performance.
 
+## When should an AI application become an agent?
+
+A one-shot model produces a response from a single call. An agent is useful when completing the goal requires a sequence of decisions and interactions with an environment: plan, retrieve information, call a system, inspect the result, correct an error, request clarification, or wait for an external event.
+
+The basic **ReAct** loop describes this iterative behavior:
+
+1. **Reason:** decide what should happen next.
+2. **Act:** call a permitted tool or produce an intermediate result.
+3. **Observe:** inspect the result or current environment state.
+4. **Continue or stop:** take another controlled step or return the final result.
+
+This can produce stronger work than asking a model to complete everything in one pass, because planning, research, drafting, checking, and revision become separate steps. The trade-off is additional latency, cost, uncertainty, security exposure, and operational complexity.
+
+A useful early screen compares **task complexity** with **required precision**. Complex tasks that tolerate review are often good starting points. Complex, high-precision, high-impact work requires narrower autonomy, deterministic validation, and human approval.
+
+For the public Example Agent, classifying a partner request and extracting typed fields are reasonable model-assisted tasks because the language and document formats vary. Creating business records or submitting a proposal request has greater impact, so those stages should use validated tool contracts, idempotency, authorization, and explicit approval.
+
+The design question is therefore not only, “Can an LLM do this?” It is:
+
+> Does controlled iteration and tool use create enough value to justify a more complex system?
+
 ## Practical takeaway
 
 AI engineering is less about asking, “How do I train a new model?” and more about asking:
