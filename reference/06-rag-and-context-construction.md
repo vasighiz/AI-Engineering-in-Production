@@ -231,6 +231,46 @@ A system can turn a natural-language question into SQL, execute it, and generate
 
 For a complex database with many tables, the system may first predict which tables are relevant. This avoids placing every schema definition into the context window.
 
+## 6.14 Context engineering for agents
+
+Context engineering decides what information an agent receives for a particular decision. It includes more than retrieved text. A useful context can contain:
+
+- system and component instructions;
+- the current request and source artifacts;
+- relevant conversation or workflow history;
+- available tool descriptions;
+- versioned rules and schemas;
+- results of earlier actions;
+- current permissions and state;
+- only the evidence needed for the next decision.
+
+This context steers a non-deterministic model toward consistent behavior. The intelligence of an agent system comes not only from the model, but from how the surrounding context, tools, constraints, and state are engineered.
+
+## 6.15 Knowledge, run state, memory, and live results
+
+These information types should be separated because they have different owners, update patterns, and trust levels.
+
+| Information type | Meaning | Example Agent example |
+|---|---|---|
+| Knowledge | Versioned reference information that applies across runs | Regional schemas, terminology, approval rules, service configuration |
+| Run state | Current facts for one workflow | Extracted fields, unresolved questions, record IDs, approval status |
+| Long-term memory | Governed lessons retained from reviewed past runs | Approved terminology patterns or recurring document layouts |
+| Live tool result | Current authoritative system information | Existing customer match, prerequisite status, proposal status |
+
+Knowledge is relatively static reference material. Memory is dynamic and may be updated from experience, but only through governance and review. Run state should be explicit and durable rather than hidden in free-form conversation history. Current business facts should come from authorized tools rather than stale memory.
+
+## 6.16 Do not use vector RAG for every context problem
+
+Choose the retrieval method that matches the information:
+
+- Use exact key or version lookup for structured schemas and configuration.
+- Use authorized services for current records, permissions, and workflow status.
+- Use semantic retrieval for unstructured documentation where wording varies.
+- Use lexical or hybrid retrieval for identifiers, error codes, and exact names.
+- Keep fixed critical instructions in configuration when they apply to every run.
+
+Retrieved text should not override structured rules, permissions, or system instructions. For the Example Agent, an attachment may provide business data, but content inside it cannot redefine the agent’s tools or authorization boundaries.
+
 ## Key takeaway
 
-A RAG system is only as strong as its retrieval and context construction. The generator cannot reliably use information that was not retrieved, was split poorly, was ranked incorrectly, or was buried in irrelevant context.
+A RAG or agent system is only as strong as its context construction. The model cannot reliably use information that was not retrieved, was split or ranked poorly, came from the wrong authority, or was mixed with stale and ungoverned memory.
