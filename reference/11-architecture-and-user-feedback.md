@@ -264,6 +264,99 @@ Architecture should evolve in response to measured needs.
 
 The field changes quickly, so flexibility matters. Interfaces, gateways, evaluation pipelines, and modular components help teams incorporate new models and techniques without destabilizing the user experience.
 
+## 11.15 Run-level and system-level visibility
+
+Production agent systems require two complementary views.
+
+### Run-level observability
+
+A complete causal trace for one request should record:
+
+- source and correlation identifiers;
+- prompt, model, schema, tool, and rule versions;
+- structured intermediate outputs;
+- retrieval results and provenance;
+- tool requests, validated arguments, responses, and errors;
+- state transitions and approval decisions;
+- retries, latency, token usage, and cost;
+- human corrections and final outcome.
+
+This “zoomed-in” view supports debugging and explains where one run failed.
+
+### System-level monitoring
+
+A “zoomed-out” view aggregates many runs. Useful metrics include:
+
+- task-completion and failure rates;
+- failure categories by component and slice;
+- human-correction and escalation rates;
+- latency and cost percentiles;
+- retry and duplicate-prevention events;
+- age of pending workflow states;
+- security violations and false refusals;
+- user behavior and business outcomes.
+
+At scale, every trace cannot receive manual review. Use automated checks and risk-based quality sampling, while always retaining enough structured evidence to investigate selected runs.
+
+## 11.16 Production safeguards for write actions
+
+Write actions need stronger controls than reads. Use:
+
+- least-privilege service identities;
+- explicit authorization checks;
+- typed parameter validation;
+- idempotency keys and duplicate detection;
+- audit logging;
+- human approval for material or ambiguous actions;
+- bounded retries and circuit breakers;
+- timeout, compensation, rollback, or recovery strategies where possible.
+
+Separate the model’s request from execution. The model can propose a tool call, but trusted application code decides whether it is permitted and safe to run.
+
+For the Example Agent, the offline intake slice has no external side effects. Later stages should add one controlled capability at a time and require promotion evidence before expanding autonomy.
+
+## 11.17 Security for agent systems
+
+Agent security must defend against external attackers, untrusted source content, and unsafe decisions by the system itself.
+
+Important threats include:
+
+- prompt injection in user input, retrieved documents, emails, or attachments;
+- leakage of personal, confidential, or proprietary data;
+- unsafe code generation or execution;
+- unauthorized tool calls;
+- resource exhaustion, excessive loops, or unexpected spending;
+- cross-user or cross-tenant memory contamination.
+
+Treat external content as data, not instructions. A source document may provide values to extract, but it cannot redefine system rules, tools, or permissions.
+
+When code execution is truly necessary, isolate it in a sandbox with time, memory, CPU, filesystem, network, and library restrictions. Validate inputs and structured outputs, scan for sensitive data, limit repair attempts, and place a circuit breaker around the loop. Prefer well-defined custom tools over unrestricted code execution whenever possible.
+
+## 11.18 Durable orchestration and staged delivery
+
+An agent graph and a durable business workflow are related but not identical. Model decisions may last seconds, while approvals and external prerequisites may take hours or days.
+
+Persist workflow state and correlation data outside the model context. Resume from events or controlled polls after restarts. Define terminal, waiting, retryable, review, and failure states explicitly.
+
+A safe rollout path is:
+
+1. offline fixtures with no external calls;
+2. authorized read-only shadow operation;
+3. controlled writes in a test environment with approval;
+4. durable waits and recovery tests;
+5. high-impact submissions behind human release;
+6. a limited production cohort with monitoring and an incident plan.
+
+Add evaluation cases before adding each capability.
+
+## 11.19 Feedback should improve evaluation before memory
+
+Human edits, approvals, rejections, and corrections are valuable, but they should not automatically become persistent agent memory.
+
+First store them as reviewed evaluation evidence with provenance and a reason. Only promote a lesson into reusable memory after confirming that it is current, authorized, broadly applicable, tenant-safe, and compatible with the active schema and policy.
+
+This prevents one-off corrections or outdated behavior from silently changing future runs.
+
 ## Key takeaway
 
-A production AI application is a continuously improving system, not a single model call. Its architecture should combine only the context, control, optimization, observability, and feedback mechanisms required to meet the actual use case.
+A production AI application is a continuously improving system, not a single model call. Its architecture should combine only the context, controls, tools, durable state, observability, security, and feedback mechanisms required by the actual use case—and add autonomy only when evaluation evidence supports it.
