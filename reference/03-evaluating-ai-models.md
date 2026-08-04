@@ -232,6 +232,45 @@ Ask:
 - Are completely uncorrelated metrics revealing different qualities, or is one metric broken?
 - How much cost and latency does evaluation add?
 
+## 3.12 Evaluating an agent system
+
+An agent cannot be evaluated only by grading its final prose. The complete business outcome and the intermediate decisions that produced it both matter.
+
+### Component-level evaluation
+
+Component checks ask whether each bounded responsibility worked correctly:
+
+- Was the request routed to the correct workflow?
+- Were required fields extracted accurately?
+- Was each value supported by the source material?
+- Was the correct schema selected?
+- Were missing and ambiguous fields detected?
+- Was the correct tool selected with valid parameters?
+- Were retries safe and justified?
+- Did a handoff preserve the required IDs, types, and evidence?
+
+### End-to-end evaluation
+
+End-to-end checks ask:
+
+- Did the workflow reach the correct state?
+- Did it complete the intended goal?
+- Did it avoid unauthorized or duplicate actions?
+- How many steps, tokens, tool calls, seconds, and dollars were required?
+- Did a human need to correct or override the result?
+
+Functional correctness should be preferred whenever a deterministic answer exists. An LLM judge is useful for softer criteria such as clarity, professionalism, or source consistency, but exact identifiers and state transitions should be checked with code and business rules.
+
+### Trace inspection
+
+The **trace** is evaluation evidence, not merely a debugging log. Store the input, prompt and model versions, structured outputs, field provenance, validation results, tool requests, tool responses, state transitions, retries, latency, cost, and human corrections.
+
+When a system fails, inspect the trace to identify whether the problem came from extraction, context, planning, tool selection, a handoff, an external dependency, or the final synthesis step. Those observations should become new regression cases.
+
+For the Example Agent, meaningful evaluation slices include complete versus incomplete submissions, one versus multiple service locations, email-only versus attachment-heavy requests, conflicting values, unsupported files, explicit versus vague proposal instructions, and prompt-injection content inside an attachment.
+
+Evaluation should begin early with a small representative dataset. It does not need to be perfect before development starts, but it must grow from observed failures and remain connected to the business risks of each error type.
+
 ## Key takeaway
 
-Evaluation should be designed before major optimization work. Without a reliable evaluation system, teams cannot know whether a new prompt, model, retriever, fine-tuning run, or architecture change actually improved the application.
+Evaluation should be designed before major optimization work. Without a reliable evaluation system, teams cannot know whether a new prompt, model, retriever, fine-tuning run, tool, or architecture change actually improved the application.

@@ -182,6 +182,36 @@ Security evaluation should track both:
 
 An application that blocks everything may be safe but unusable. The design goal is to reduce successful attacks without creating excessive friction for valid users.
 
+## 5.9 Prompts as versioned component contracts
+
+An agent prompt should define one bounded responsibility rather than describe an entire business workflow to one model. Each LLM component should have:
+
+- a clear task and stopping condition;
+- authoritative and non-authoritative inputs;
+- the tools or evidence it may use;
+- an explicit typed output schema;
+- rules for missing, conflicting, and ambiguous values;
+- examples covering normal and edge cases;
+- prohibited inferences and actions;
+- prompt, model, and schema versions.
+
+For the Example Agent, an extraction component should return a typed request object with source provenance. It should mark a field as missing or ambiguous instead of selecting a plausible value. Deterministic code—not prompt wording—should normalize identifiers, enforce conditional requirements, validate transitions, and decide whether the workflow may advance.
+
+Tool instructions should describe the tool name, when it is appropriate, the typed input fields, expected output, and important constraints. The model requests a tool call; application code validates permissions and arguments before executing it.
+
+## 5.10 Reflection as an evaluated second pass
+
+Reflection means that a model creates an output, critiques it, and revises it when necessary. It is especially useful when external feedback is available, such as:
+
+- a JSON-schema validation error;
+- a failed code test;
+- a missing citation check;
+- evidence that a required field lacks provenance.
+
+Reflection adds another model call and therefore more latency and cost. Test the component with and without reflection. Keep it only when the evaluation set demonstrates a meaningful improvement.
+
+A reflection step must not invent missing authoritative information. For the Example Agent, it may identify conflicts between an email and attachment or flag values without evidence, but it may not “repair” an unknown customer identifier or proposal choice by guessing.
+
 ## Key takeaway
 
-Prompt engineering is accessible, but it is not casual trial and error. Effective prompting combines clear instructions, examples, decomposition, model-specific formatting, evaluation, version control, and security testing.
+Prompt engineering is accessible, but it is not casual trial and error. Effective prompting combines clear instructions, examples, typed component contracts, decomposition, model-specific formatting, evaluation, version control, and security testing.

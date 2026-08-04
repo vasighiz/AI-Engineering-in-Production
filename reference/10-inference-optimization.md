@@ -279,6 +279,55 @@ For many applications, the course highlights several high-impact techniques:
 
 Low-latency applications may accept higher cost for more replicas. Offline workloads may emphasize large batches and maximum throughput.
 
+## 10.13 Optimize the complete agent workflow
+
+Agent latency and cost are sums across components, not properties of one model call. Establish a baseline for every stage:
+
+- ingestion and document parsing;
+- retrieval and reranking;
+- each model call;
+- deterministic validation;
+- tool execution;
+- retries and reflection passes;
+- orchestration and handoffs;
+- external waits and human checkpoints.
+
+Record both per-step and end-to-end percentiles. This reveals whether the largest bottleneck is model inference, an external API, repeated parsing, unnecessary serialization, or a long-running business dependency.
+
+## 10.14 Latency optimization order
+
+After measuring the baseline:
+
+1. Remove unnecessary model, retrieval, and tool calls.
+2. Run genuinely independent work in parallel, such as parsing separate attachments or performing independent read-only lookups.
+3. Use smaller and faster models for simple components when evaluation permits.
+4. Trim prompts and pass only the context needed for the current decision.
+5. Test faster providers or serving configurations.
+6. Cache versioned schemas, deterministic lookups, embeddings, retrieval results, and other safe repeated work.
+7. Optimize the largest measured bottleneck first.
+
+Parallelism should respect dependencies and side effects. Two write operations that can conflict should not be parallelized simply to reduce latency.
+
+## 10.15 Cost optimization order
+
+Measure tokens, model charges, external API fees, parsing services, storage, vector infrastructure, and compute for each step. Then:
+
+- attack the largest cost buckets first;
+- reduce redundant searches and tool calls;
+- tier models by task difficulty;
+- constrain outputs to typed and concise formats;
+- cache deterministic or versioned results;
+- batch offline evaluations and high-volume homogeneous work;
+- set step, token, retry, and spending limits.
+
+A successful workflow that uses twenty calls may be less valuable than one that reaches the same verified outcome in three.
+
+## 10.16 Durable waits are not model latency
+
+A production workflow may wait minutes, hours, or days for a prerequisite, approval, external calculation, or status change. The system should persist its state, release compute, and resume from an event or controlled poll.
+
+Do not keep an LLM loop or worker active while waiting. For the Example Agent, prerequisite data, approval, and proposal processing should be modeled as durable workflow states with correlation IDs, timeouts, and recovery behavior.
+
 ## Key takeaway
 
-Inference optimization is not one trick. It is a layered process that begins with profiling, then applies model, decoding, kernel, batching, caching, and parallelism techniques that match the actual workload bottleneck.
+Inference optimization is not one trick, and agent optimization is not limited to inference. Profile the full workflow, remove unnecessary work, parallelize only safe independent steps, right-size models, trim context, cache and batch appropriately, and separate durable business waits from active computation.

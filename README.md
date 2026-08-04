@@ -1,6 +1,8 @@
 # AI Engineering in Production
 
-A source-based study reference covering the core concepts, design decisions, and production considerations of AI engineering. The material is organized by topic so each chapter can be expanded later with practical examples, implementation notes, diagrams, and additional explanations.
+A source-based study reference covering the core concepts, design decisions, and production considerations of AI engineering. The material is organized by topic so each chapter can grow alongside practical implementation, evaluation, diagrams, and lessons learned.
+
+The reference begins with the broader AI-application lifecycle and now extends it with production agent-system design and a fictional Example Agent case study.
 
 ## Interactive Lab
 
@@ -19,14 +21,37 @@ Explore agent design, autonomy, ReAct loops, guardrails, and production readines
 - [9. Dataset Engineering](reference/09-dataset-engineering.md)
 - [10. Inference Optimization](reference/10-inference-optimization.md)
 - [11. Architecture and User Feedback](reference/11-architecture-and-user-feedback.md)
+- [12. Designing Production Agent Systems](reference/12-designing-production-agent-systems.md)
+
+## Case Study
+
+The [Example Agent — Partner Service Request Intake](case-studies/example-agent/README.md) connects the concepts to a staged implementation roadmap.
+
+The scenario is deliberately fictional and generalized. It demonstrates unstructured intake, typed extraction, provenance, region-specific validation, durable workflow state, approvals, evaluation, and controlled tool use without publishing a real company process or proprietary system design.
+
+## How the material fits together
+
+The first eleven chapters cover the broader AI-engineering lifecycle: foundation models, evaluation, model selection, prompting, RAG, agents, fine-tuning, data, inference, architecture, monitoring, and feedback.
+
+Chapter 12 adds the operational agent-design layer:
+
+- deciding whether a task deserves an agent;
+- choosing an autonomy level;
+- decomposing work;
+- defining tasks, tools, knowledge, memory, state, and guardrails;
+- evaluating intermediate decisions and full traces;
+- adding side effects only after a read-only slice passes;
+- operating the system with security, observability, and human oversight.
 
 ## About This Reference
 
-This repository currently contains a study guide derived from the AI Engineering by Chip Huyen. Further addition will be upload as follows:
+This repository is a growing study guide based initially on *AI Engineering* by Chip Huyen and expanded with agent-system design material, practical exercises, and implementation learning.
 
-- implementation examples
-- production patterns
-- diagrams and architecture decisions
-- evaluation templates
-- exercises and interview questions
-- references to tools, frameworks, and research
+Planned additions include:
+
+- implementation examples;
+- production patterns;
+- diagrams and architecture decisions;
+- evaluation templates and datasets;
+- exercises and interview questions;
+- references to tools, frameworks, and research.

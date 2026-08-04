@@ -188,6 +188,31 @@ Evaluate models across different user and data slices. Then test whether the res
 
 A model should not be declared superior based on a small or unstable difference. The evaluation pipeline must be reliable enough that repeated experiments lead to similar conclusions.
 
+## 4.13 Select models by component
+
+An agent system is made of multiple components with different difficulty, risk, latency, and formatting requirements. Model selection should therefore happen at the component level rather than assuming one model must handle the entire workflow.
+
+A smaller, faster model may be sufficient for:
+
+- request classification;
+- keyword or search-query generation;
+- schema-constrained extraction;
+- simple normalization suggestions;
+- drafting a clarification from an already determined missing-field list.
+
+A stronger model may be justified for:
+
+- ambiguous evidence comparison;
+- difficult synthesis across several sources;
+- nuanced reasoning where the evaluation set shows a measurable quality advantage;
+- delicate user-facing language that cannot be generated reliably by a smaller candidate.
+
+Compare candidates on the actual component dataset. Useful measurements include required-field accuracy, no-invention rate, schema validity, tool-selection accuracy, latency, token usage, cost, and stability across repeated runs.
+
+Start with a capable model to establish whether the component is feasible. After the pipeline and evaluation are stable, test smaller candidates and build a cost–quality frontier. Model tiering should follow measured evidence rather than intuition.
+
+For the Example Agent, classification and typed extraction can be evaluated independently from clarification drafting or higher-risk decision support. This makes it possible to use different models—or deterministic code—where each is most appropriate.
+
 ## Key takeaway
 
 Model selection is a multi-objective engineering decision. The best production choice is the model that satisfies hard constraints and offers the strongest business value across quality, cost, latency, privacy, and control—not necessarily the model with the highest general benchmark score.

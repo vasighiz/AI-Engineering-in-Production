@@ -262,6 +262,56 @@ If the available data exceeds the training budget, active learning can help sele
 
 Use the correct tokenizer and chat template. A high-quality dataset in the wrong input format may still train poorly.
 
+## 9.11 Agent traces and corrections become datasets
+
+Agent systems produce richer learning records than a final prompt-and-response pair. A governed trace can capture:
+
+- the original input or a redacted fixture;
+- expected and predicted route;
+- expected and predicted typed object;
+- field-level provenance;
+- required missing and ambiguous fields;
+- available tools and selected tool calls;
+- expected and actual workflow state;
+- allowed and prohibited actions;
+- retries, errors, and external results;
+- human correction and the reason for it;
+- evaluation slice labels.
+
+These records can support regression evaluation, prompt improvement, tool debugging, model selection, and eventually fine-tuning. The trace should be treated as sensitive operational data: redact or tokenize private fields, apply retention rules, preserve provenance, enforce access controls, and keep tenant or customer data isolated.
+
+Human feedback should enter the evaluation dataset before it enters long-term memory. A correction becomes reusable only after review confirms that it is accurate, current, authorized, and consistent with the active schema or policy.
+
+## 9.12 Build coverage from failures
+
+Begin with a small set of representative normal cases and deliberately difficult edge cases. For the Example Agent, useful labels include:
+
+- complete versus incomplete request;
+- single versus multiple service locations;
+- email-only versus attachment-heavy input;
+- conflicting evidence;
+- formatted identifiers and leading zeros;
+- unsupported or corrupt attachments;
+- ambiguous proposal instructions;
+- prompt injection inside source material;
+- duplicate or uncertain business-record matches.
+
+Each observed production or shadow-mode failure should become a reviewed regression case. This turns operational experience into a durable improvement asset rather than repeatedly fixing the same symptom.
+
+## 9.13 Separate evaluation data from adaptation data
+
+Do not automatically train on every production trace. Evaluation sets must remain stable enough to compare system versions, while training or prompt-development data can change more freely.
+
+Maintain clear splits and lineage:
+
+- development examples for prompt and component iteration;
+- evaluation examples for release decisions;
+- adversarial and safety suites;
+- reviewed adaptation data for fine-tuning;
+- holdout cases that are not used during optimization.
+
+This separation reduces leakage and prevents an apparently improving system from merely memorizing its tests.
+
 ## Key takeaway
 
-Dataset engineering is not simply collecting more examples. It is the disciplined process of defining desired behavior, creating coverage, enforcing quality, preserving compliance, and measuring whether additional data produces meaningful improvement.
+Dataset engineering is not simply collecting more examples. It is the disciplined process of defining desired behavior, creating coverage, enforcing quality and governance, and converting reviewed traces and corrections into reliable evaluation and improvement data.

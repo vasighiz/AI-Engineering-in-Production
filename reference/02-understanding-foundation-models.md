@@ -136,6 +136,23 @@ Top-p selects the smallest set of tokens whose cumulative probability exceeds a 
 
 The probabilistic nature of generation helps explain why small prompt changes can produce different answers and why models can confidently generate incorrect information.
 
+## 2.10 Model capability is one component of an agent system
+
+A capable foundation model can improve reasoning, extraction, planning, and instruction following, but it does not make an agent reliable by itself. Production behavior also depends on:
+
+- the context supplied for each decision;
+- task decomposition;
+- typed tool interfaces;
+- deterministic validation;
+- workflow state and memory boundaries;
+- authorization and guardrails;
+- trace-based evaluation;
+- latency, cost, monitoring, and recovery design.
+
+A stronger model may reduce some errors, but it cannot compensate for a missing business rule, an unsafe tool, stale context, an ambiguous handoff, or an architecture that allows unauthorized actions.
+
+The chapters that follow therefore treat the model as one replaceable component inside a larger engineered system.
+
 ## Key takeaway
 
-Understanding foundation models does not mean knowing every architectural detail. For an AI engineer, the important point is to understand how training data, architecture, context length, post-training, and sampling affect the behavior, cost, and reliability of the applications built on top of them.
+Understanding foundation models does not mean knowing every architectural detail. For an AI engineer, the important point is to understand how training data, architecture, context length, post-training, and sampling affect the behavior, cost, and reliability of the applications built on top of them—and where system design must supply controls the model itself cannot guarantee.
