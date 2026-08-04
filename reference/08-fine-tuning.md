@@ -268,6 +268,24 @@ For instruction fine-tuning, this controls how much the prompt tokens contribute
 - At 0%, the model learns only from the response portion.
 - The course notes that a default may place relatively low weight on prompt tokens.
 
+## 8.16 Fine-tuning is a late agent-system optimization
+
+When an agent component performs poorly, first determine whether the failure actually belongs to the model. Many apparent model problems are caused by:
+
+- an overly broad task;
+- incomplete or irrelevant context;
+- unclear tool descriptions;
+- a weak typed schema;
+- incorrect handoffs;
+- missing deterministic validation;
+- poor retrieval or parsing;
+- an unsuitable model choice;
+- an unreliable evaluation set.
+
+Improve prompts, examples, context, decomposition, tools, schemas, and non-LLM components before fine-tuning. Fine-tuning is most appropriate after the system has matured, failures are repeatable and behavioral, high-quality reviewed examples exist, and the team needs the final performance gain or a smaller specialized model.
+
+For the Example Agent, fine-tuning should not be part of the initial offline intake slice. Production traces and reviewed corrections may later create a dataset, but adaptation should follow evidence that simpler improvements have plateaued.
+
 ## Key takeaway
 
 Fine-tuning should be a deliberate response to measured behavioral limitations, not the default first step. Its success depends less on the existence of a training framework and more on evaluation quality, data quality, method selection, and careful control of compute and memory.
