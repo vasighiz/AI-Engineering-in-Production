@@ -27,7 +27,6 @@ Explore agent design, autonomy, ReAct loops, guardrails, and production readines
 
 The [Example Agent — Partner Service Request Intake](case-studies/example-agent/README.md) connects the concepts to a staged implementation roadmap.
 
-The scenario is deliberately fictional and generalized. It demonstrates unstructured intake, typed extraction, provenance, region-specific validation, durable workflow state, approvals, evaluation, and controlled tool use without publishing a real company process or proprietary system design.
 
 ## How the material fits together
 
