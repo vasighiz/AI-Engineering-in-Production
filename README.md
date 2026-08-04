@@ -2,6 +2,10 @@
 
 A source-based study reference covering the core concepts, design decisions, and production considerations of AI engineering. The material is organized by topic so each chapter can be expanded later with practical examples, implementation notes, diagrams, and additional explanations.
 
+## Interactive Lab
+
+Explore agent design, autonomy, ReAct loops, guardrails, and production readiness in the [AI Agent Systems Lab](https://ai-engineering-in-production.vercel.app/).
+
 ## Contents
 
 - [1. What Is AI Engineering?](reference/01-what-is-ai-engineering.md)
