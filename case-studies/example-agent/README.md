@@ -2,7 +2,7 @@
 
 This public case study demonstrates how to design and develop a production-oriented agent system while learning AI engineering.
 
-The scenario is intentionally fictional. It does not describe a real company, customer workflow, internal platform, market, production interface, or proprietary business rule.
+The scenario is intentionally fictional. It does not describe any real workflow, internal platform, market, production interface, or proprietary business rule.
 
 ## 1. Scenario
 
