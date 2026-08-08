@@ -6,7 +6,7 @@ The scenario is intentionally fictional. It does not describe any real workflow,
 
 ## 1. Scenario
 
-Authorized partners send service requests by email. The messages may contain attachments, multiple service locations, regional requirements, missing fields, conflicting values, or vague proposal instructions.
+Authorized partners send service requests by email. The messages may contain attachments, multiple service requirements, missing fields, conflicting values, or vague proposal instructions.
 
 The Example Agent turns this unstructured material into a typed, validated, auditable request package. Later stages may query or create business records, wait for prerequisites and approvals, submit a proposal request, and prepare a response.
 
